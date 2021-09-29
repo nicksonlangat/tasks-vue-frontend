@@ -1,6 +1,6 @@
-<template>
+<template >
    <!-- component -->
-<div class="h-100 w-full flex items-center justify-center bg-red-100 font-sans">
+<div class=" w-full flex items-center justify-center bg-gray-300 font-sans">
 	<div class="bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg">
         <div class="mb-4">
             <h1 class="text-grey-darkest">Todo List</h1>
@@ -21,59 +21,18 @@
                 hover:text-white hover:bg-green-600">Add</button>
             </div>
         </div>
-        <div>
-            <div class="flex mb-4 items-center">
-                <p class="w-full text-grey-darkest">Add another component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green border-green hover:bg-green-800">Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-          	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-            	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-            	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-            	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-            	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-            	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-            	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-            	<div class="flex mb-4 items-center">
-                <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-                <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-red-700">Not Done</button>
-                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red-900">Remove</button>
-            </div>
-        </div>
+        <!-- List of tasks -->
+        <Tasks/>
     </div>
 </div>
 </template>
 <script>
 import TaskService from '../services/TaskService'
+import Tasks from './Tasks.vue'
 export default {
+  components:{
+    Tasks
+  },
   data(){
     return {
       task:{
@@ -86,22 +45,31 @@ export default {
   },
 
   methods:{
+    refresh:function(){
+      this.$root.$refs.Tasks.retrieveTasks();
+    },
+    clearForm(){
+       this.task.title='';
+       this.task.description='';
+    }
+    ,
     saveTask(){
       let data={
         title:this.task.title,
         description:this.task.description
       };
-      // console.log(data)
+      console.log(data)
       TaskService.create(data).then(response=>{
         this.task.id=response.data.id;
-        console.log(response.data);
+        // console.log(response.data);
         this.is_submitted=true;
+        this.clearForm();
+        this.refresh();
       }).catch(error=>{
         console.log(error)
       });
     },
-
-    
   }
+  
 }
 </script>

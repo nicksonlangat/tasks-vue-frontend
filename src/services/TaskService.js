@@ -2,7 +2,7 @@ import http from '../http.common';
 
 class TaskService{
     getAll(){
-        return http.get('/tasks');
+        return http.get('/tasks/');
     }
 
     get(id){
@@ -14,6 +14,10 @@ class TaskService{
         }
     
     update(id, data){
+        return http.put(`/tasks/${id}/`, data);
+        }
+    
+    complete(id, data){
         return http.put(`/tasks/${id}/`, data);
         }
     
